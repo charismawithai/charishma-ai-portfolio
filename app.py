@@ -151,6 +151,7 @@ if question:
     st.session_state.messages.append({"role": "assistant", "content": answer})
 
 # ---------------- CHAT DISPLAY ----------------
-for msg in st.session_-state.messages:
+for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
+
