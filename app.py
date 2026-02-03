@@ -4,7 +4,33 @@ import streamlit as st
 from groq import Groq
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
+from langchain_community.document_loaders import TextLoader
+from langchain.text_splitter import RecursiveCharacterTextSplitter
 
+
+# ---------------- BUILD / LOAD KNOWLEDGE DB ----------------
+DB_PATH = "knowledge_db"
+
+if not os.path.exists(DB_PATH):
+    # Build DB from my_notes.txt (runs automatically on Streamlit Cloud)
+    loader = TextLoader("my_notes.txt", encoding="utf-8")
+    documents = loader.load()
+
+    splitter = RecursiveCharacterTextSplitter(
+        chunk_size=800,
+        chunk_overlap=150
+    )
+    chunks = splitter.split_documents(documents)
+
+    db = FAISS.from_documents(chunks, embeddings)
+    db.save_local(DB_PATH)
+else:
+    db = FAISS.load_local(
+        DB_PATH,
+        embeddings,
+        allow_dangerous_deserialization=True
+    )
+ 
 # ---------------- LOAD API ----------------
 load_dotenv()
 client = Groq(api_key=os.getenv("GROQ_API_KEY"))
@@ -154,3 +180,4 @@ if question:
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
+
