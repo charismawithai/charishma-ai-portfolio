@@ -1,0 +1,10 @@
+# Ignore FAISS vector database
+knowledge_db/
+*.faiss
+*.pkl
+
+# Ignore env files
+.env
+
+# Python cache
+__pycache__/
