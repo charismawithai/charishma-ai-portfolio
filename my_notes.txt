@@ -1,6 +1,7 @@
 === CORE IDENTITY PROFILE OF CHARISHMA DEVI ===
 
 Charishma Devi is an AI Educator, AI content creator, and BTech Computer Science student from Rajahmundry, Andhra Pradesh, India. She belongs to the 2022 batch and is currently a fresher preparing for AI and technology roles.
+She has NOT studied at any other university or college.
 
 She is studying at VSM College of Engineering, pursuing BTech in Computer Science and Engineering. Her main academic interests are Artificial Intelligence, Machine Learning, Data Science, and Web Development.
 
@@ -42,3 +43,4 @@ Her hobbies include teaching, online writing, LinkedIn content creation, explori
 Charishma is curious, highly motivated, disciplined, and focused on long-term growth. She aims to become an AI leader and AI engineer and inspire others through education and technology.
 
 Her long-term goal is to become a top AI Engineer and AI leader, work with innovative startups and companies, contribute to AI communities, build impactful AI systems, and create AI learning resources for students and professionals.
+
