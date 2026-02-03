@@ -2,88 +2,86 @@ import os
 from dotenv import load_dotenv
 import streamlit as st
 from groq import Groq
-
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
 
-# ---------------- LOAD ENV ----------------
+# ---------------- LOAD API ----------------
 load_dotenv()
+client = Groq(api_key=os.getenv("GROQ_API_KEY"))
 
-GROQ_API_KEY = os.getenv("GROQ_API_KEY")
+# ---------------- LOAD VECTOR DB ----------------
+embeddings = HuggingFaceEmbeddings(model_name="all-MiniLM-L6-v2")
+db = FAISS.load_local("knowledge_db", embeddings, allow_dangerous_deserialization=True)
 
-if not GROQ_API_KEY:
-    st.error("❌ GROQ_API_KEY not found. Please add it in Streamlit Secrets.")
-    st.stop()
-
-client = Groq(api_key=GROQ_API_KEY)
-
-# ---------------- PAGE CONFIG ----------------
-st.set_page_config(
-    page_title="Charishma Devi — AI Portfolio",
-    page_icon="🤖",
-    layout="wide"
-)
-
-# ---------------- UI STYLE ----------------
-st.markdown("""
-<style>
-.stApp { background-color: #0e1117; }
-h1, h2, h3, p, div { color: white; }
-[data-testid="stSidebar"] { padding-top: 10px; }
-</style>
-""", unsafe_allow_html=True)
-
-# ---------------- SESSION STATE ----------------
+# ---------------- CHAT HISTORY ----------------
 if "messages" not in st.session_state:
     st.session_state.messages = []
 
 if "questions" not in st.session_state:
     st.session_state.questions = []
 
-# ---------------- LOAD EMBEDDINGS (CPU SAFE) ----------------
-@st.cache_resource
-def load_embeddings():
-    return HuggingFaceEmbeddings(
-        model_name="all-MiniLM-L6-v2",
-        model_kwargs={"device": "cpu"}   # 🔥 CRITICAL FIX
-    )
+# ---------------- UI STYLE ----------------
+st.markdown("""
+<style>
+.stApp { background-color: #0e1117; }
+h1, h2, h3, p, div { color: white; }
 
-embeddings = load_embeddings()
+[data-testid="stSidebar"] {
+    padding-top: 10px !important;
+}
 
-# ---------------- LOAD VECTOR DB SAFELY ----------------
-db = None
-if os.path.exists("knowledge_db"):
-    try:
-        db = FAISS.load_local(
-            "knowledge_db",
-            embeddings,
-            allow_dangerous_deserialization=True
-        )
-    except Exception as e:
-        st.warning("⚠️ Knowledge base not loaded. Using fallback answers.")
+.chat-box {
+    font-size: 15px;
+}
+</style>
+""", unsafe_allow_html=True)
 
+# ================= SIDEBAR =================
 # ================= SIDEBAR =================
 with st.sidebar:
 
-    st.image("charisma.jpg", width=260)
-    st.markdown("<h2 style='text-align:center;'>Charishma Devi</h2>", unsafe_allow_html=True)
+    # Rounded Profile Image (CENTER)
+    col1, col2, col3 = st.columns([1,2,1])
+    with col2:
+        st.image("data/charisma.jpg", width=220)
 
     st.markdown("""
-    <p style="text-align:center; color:#bbbbbb;">
+    <style>
+    img {
+        border-radius: 100%;
+        border: 3px solid #444;
+        display:block;
+        margin-left:auto;
+        margin-right:auto;
+    }
+    </style>
+    """, unsafe_allow_html=True)
+
+    # BIG NAME
+    st.markdown("""
+    <h2 style="text-align:center; font-weight:800; font-size:22px;">Charishma Devi</h2>
+    """, unsafe_allow_html=True)
+
+    # TAGLINE
+    st.markdown("""
+    <p style="text-align:center; font-size:14px; color:#bbbbbb;">
     Building AI Projects in Public • AI Educator • Tech Career Mentor
     </p>
     """, unsafe_allow_html=True)
 
     st.markdown("---")
 
+    # LinkedIn
     st.markdown("🔗 **LinkedIn**")
     st.markdown("[Visit LinkedIn](https://linkedin.com/in/YOUR_LINKEDIN_USERNAME)")
 
+    # Instagram
     st.markdown("📸 **Instagram**")
     st.markdown("[Visit Instagram](https://instagram.com/YOUR_INSTAGRAM_USERNAME)")
 
+    # Resume Download
     st.markdown("📄 **Resume**")
-    with open("Charisma_Resume.pdf", "rb") as file:
+    with open("data/Charisma_Resume.pdf", "rb") as file:
         st.download_button(
             "📥 Download My Resume",
             file,
@@ -91,11 +89,13 @@ with st.sidebar:
             mime="application/pdf"
         )
 
+    # Chat History
     st.markdown("---")
     st.subheader("💬 Chat History")
     for q in reversed(st.session_state.questions):
         st.markdown(f"- {q}")
 
+    # Clear Chat Button
     st.markdown("---")
     if st.button("🗑️ Clear Chat"):
         st.session_state.messages = []
@@ -109,54 +109,48 @@ st.write("Ask anything about my AI projects, skills, LinkedIn journey, or career
 # ---------------- SYSTEM PROMPT ----------------
 system_prompt = """
 You are Charishma Devi speaking in FIRST PERSON.
+Answer like a confident AI engineer and educator.
 
-STRICT RULES (NO EXCEPTIONS):
-- Answer ONLY using the provided context.
-- If the answer is not present in the context, say:
-  "This information is not available in my knowledge base yet."
-- NEVER guess colleges, cities, universities, or timelines.
-- NEVER use outside knowledge.
+When asked about projects ALWAYS mention:
+Career Prediction System,
+AI Interview Feedback Analyzer,
+Health Risk Prediction System,
+Diabetes Risk Prediction System.
 
-Education facts MUST come only from context.
-
-Projects that MUST be mentioned when asked:
-- Career Prediction System
-- AI Interview Feedback Analyzer
-- Health Risk Prediction System
-- Diabetes Risk Prediction System
-
-
-Do not invent projects.
+Explain professionally like ChatGPT.
+Do not invent new projects.
 """
 
 # ---------------- CHAT INPUT ----------------
 question = st.chat_input("Ask about my AI journey, projects, or skills...")
 
-# ---------------- RESPONSE ----------------
+# ---------------- AI RESPONSE ----------------
 if question:
+    # Save question in sidebar
     st.session_state.questions.append(question)
+
+    # Save chat
     st.session_state.messages.append({"role": "user", "content": question})
 
-    context = ""
-    if db:
-        docs = db.similarity_search(question, k=6)
-        context = " ".join(d.page_content for d in docs)
+    # Retrieve RAG context
+    docs = db.similarity_search(question, k=10)
+    context = " ".join([d.page_content for d in docs])
 
-    response = client.chat.completions.create(
+    # Call AI
+    chat = client.chat.completions.create(
         model="llama-3.1-8b-instant",
         temperature=0.7,
         max_tokens=700,
         messages=[
             {"role": "system", "content": system_prompt},
-            {"role": "user", "content": f"Context:\n{context}\n\nQuestion:\n{question}"}
+            {"role": "user", "content": f"Context: {context}\nQuestion: {question}"}
         ]
     )
 
-    answer = response.choices[0].message.content
+    answer = chat.choices[0].message.content
     st.session_state.messages.append({"role": "assistant", "content": answer})
 
 # ---------------- CHAT DISPLAY ----------------
 for msg in st.session_state.messages:
     with st.chat_message(msg["role"]):
         st.write(msg["content"])
-
