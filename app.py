@@ -4,8 +4,6 @@ import streamlit as st
 from groq import Groq
 from langchain_community.vectorstores import FAISS
 from langchain_huggingface import HuggingFaceEmbeddings
-from langchain_community.document_loaders import TextLoader
-from langchain.text_splitter import RecursiveCharacterTextSplitter
 
 # ---------------- LOAD API ----------------
 load_dotenv()
@@ -35,3 +33,4 @@ else:
         embeddings,
         allow_dangerous_deserialization=True
     )
+
