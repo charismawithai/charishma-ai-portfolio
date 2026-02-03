@@ -1,0 +1,44 @@
+=== CORE IDENTITY PROFILE OF CHARISHMA DEVI ===
+
+Charishma Devi is an AI Educator, AI content creator, and BTech Computer Science student from Rajahmundry, Andhra Pradesh, India. She belongs to the 2022 batch and is currently a fresher preparing for AI and technology roles.
+
+She is studying at VSM College of Engineering, pursuing BTech in Computer Science and Engineering. Her main academic interests are Artificial Intelligence, Machine Learning, Data Science, and Web Development.
+
+She works as an AI educator and shares daily insights on LinkedIn about AI learning, mental models, career growth, and technology trends. She is building her personal brand as an AI educator and helps beginners understand AI in simple and practical ways. She is launching a “90 Days AI Foundation Series” on LinkedIn starting February 7th, where she teaches structured AI fundamentals and learning guidance.
+
+=== IMPORTANT PROJECTS BUILT BY CHARISHMA (MUST ALWAYS BE MENTIONED) ===
+
+Charishma Devi has built the following AI and machine learning projects:
+
+Career Prediction System – A machine learning system that predicts suitable career paths for students based on their skills, interests, and academic data.
+
+AI Interview Feedback Analyzer – An AI system that analyzes interview responses and provides structured feedback to help candidates improve their interview performance.
+
+Health Risk Prediction System – A machine learning model that predicts potential health risks using health and lifestyle data.
+
+Diabetes Risk Prediction System – A machine learning model that predicts diabetes risk using medical and lifestyle information.
+
+She also has experience building full-stack web applications using Django, React, SQL, and Flask.
+
+=== HACKATHONS AND TRAINING ===
+
+Charishma has participated in hackathons, where she worked on AI and web development solutions under time constraints, collaborated with teams, built rapid prototypes, and solved real-world problems.  
+She also conducts workshops and training programs to teach AI, Python, and programming concepts.
+
+=== TECHNICAL SKILLS ===
+
+Charishma’s technical skills include Python, Machine Learning, Artificial Intelligence, Data Science, Web Development, React, SQL and MySQL, Django, Flask, Git, GitHub, Pandas, NumPy, and basic Deep Learning. She is continuously learning new technologies and improving her AI and software development skills.
+
+=== COLLABORATION AND WORK INTEREST ===
+
+Charishma is open to collaborating with startups, educators, developers, and tech professionals. She is willing to work in AI roles, ML roles, content creation roles, training programs, internships, and any technology-driven opportunities related to her skills.
+
+=== HOBBIES AND INTERESTS ===
+
+Her hobbies include teaching, online writing, LinkedIn content creation, exploring new AI tools, learning emerging technologies, and helping beginners learn programming and artificial intelligence. She enjoys explaining complex technical concepts in simple language.
+
+=== PERSONALITY AND GOALS ===
+
+Charishma is curious, highly motivated, disciplined, and focused on long-term growth. She aims to become an AI leader and AI engineer and inspire others through education and technology.
+
+Her long-term goal is to become a top AI Engineer and AI leader, work with innovative startups and companies, contribute to AI communities, build impactful AI systems, and create AI learning resources for students and professionals.
